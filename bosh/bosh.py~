@@ -112,11 +112,11 @@ class baseCmd(cmd.Cmd):
     def do_FIND(self,line):
         self.do_find(line)
     def do_find(self, line):
-        rpcshell.shell(self.connargs, "" , "find " + line , True)
+        rpcshell.shell(self.connargs, "" , "find " + line)
     def do_APPLY(self,line):
         self.do_apply(line)
     def do_apply(self, line):
-        rpcshell.shell(self.connargs, "" , "apply " + line , True)
+        rpcshell.shell(self.connargs, "" , "apply " + line)
     def do_SET(self,line):
         self.do_set(line)
     def do_set(self,line):
@@ -124,7 +124,7 @@ class baseCmd(cmd.Cmd):
     def do_GET(self,line):
         self.do_get(line)
     def do_get(self, line):
-        rpcshell.shell(self.connargs, "" , "get " + line , True)  
+        rpcshell.shell(self.connargs, "" , "get " + line)  
     def do_DROP(self,line):
         self.do_drop(line)
     def do_drop(self, line):
@@ -136,7 +136,7 @@ class baseCmd(cmd.Cmd):
     def do_SELECT(self, line):
         self.do_select(line)
     def do_select(self, line):
-        rpcshell.shell(self.connargs, "" , "select " + line , True)
+        rpcshell.shell(self.connargs, "" , "select " + line)
     def do_INSERT(self, line):
         self.do_insert(line)
     def do_insert(self, line):

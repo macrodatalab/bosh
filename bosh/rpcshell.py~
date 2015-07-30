@@ -13,9 +13,9 @@ def getData(server,cmdStr,show_total_count):
 	check_save = True
 	for content in json_stream(r.raw):
 		total_row += printdata(json.dumps(content))
-		#if(check_save == True and total_row > 10000):
-		#	check_save = resDataSave()
-		#	break
+		if(check_save == True and total_row > 10000):
+			check_save = resDataSave()
+			break
 	if show_total_count == True :
 		print("total row : " + str(total_row))	
 
@@ -24,22 +24,22 @@ def json_stream(fp):
 		#print(line)
 		yield json.loads(line)
 
-#def resDataSave()
-#	confirmStr= "Size of data exceeded display limit, dump to csv format? (yes/no)"
-#        import fileinput
-#        print confirmStr
-#        while True:
-#        	choice=raw_input()
-#                if choice=="yes" or choice=="y":
-#        	        break
-#                elif choice=="no" or choice=="n":
-#        		return False
-#        	else:
-#        		print confirmStr
-#        tools.dump2Csv(result_table,out_command,line_count,status="init")
-#        line_count+=len(result_table)
-#        result_table=[]
-#        isDump=True
+def resDataSave()
+	confirmStr= "Size of data exceeded display limit, dump to csv format? (yes/no)"
+        import fileinput
+        print confirmStr
+        while True:
+        	choice=raw_input()
+                if choice=="yes" or choice=="y":
+        	        break
+                elif choice=="no" or choice=="n":
+        		return False
+        	else:
+        		print confirmStr
+        tools.dump2Csv(result_table,out_command,line_count,status="init")
+        line_count+=len(result_table)
+        result_table=[]
+        isDump=True
 
 def printdata(data_str):
 	data = json.loads(data_str)
