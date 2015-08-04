@@ -2,13 +2,14 @@ from setuptools import setup, find_packages
 
 setup(
     name='bosh',
-    version='0.2.0.dev',
+    version='0.2.0',
     packages=find_packages(),
 
     install_requires=[
 	'requests',
         'pyparsing',
-        'openpyxl'
+        'openpyxl',
+	'bosh-dumpRes'
     ],
 
     entry_points = {
