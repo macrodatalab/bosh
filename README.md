@@ -1,21 +1,24 @@
 # BOSH - a BigObject shell
 
-BigObject service provides storage and analytic computation for your data.
+bosh is a python command-line interface for a BigObject server
+
+##System requirements
+Python 2.7.6
+
+BigObject server provides storage and analytic computation for your data.
 These feature endpoints are made available through BigObject query language,
-The language are divided into two feature sets, with a single admin
-control for list and get metadata opertions.
 
 Refer to the full documentation [here](https://docs.bigobject.io/)
 
-## Getting BigObject service
+## Getting BigObject
 
-We recommend you provision a BigObject service through
+We recommend you build your BigObject server through
 [Docker Hub](https://registry.hub.docker.com/u/macrodata/bigobject/).  Other options available through custom
 request via info@macrodatalab.com
 
 ## Getting BOSH
 
-The recommended way for getting BOSH is through the official cheese factory.
+The recommended way for getting BOSH is through the python package management tool "pip" :
 
 ```bash
 $ pip install bosh
