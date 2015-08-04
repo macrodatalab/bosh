@@ -4,13 +4,11 @@ import sys
 import time
 
 
-def cmd2JSON(cmd):
-	return json.dumps({'Stmt':cmd,'Workspace':"",'Opts':{}})
+def cmd2JSON(cmd , workspace_name=""):
+	return json.dumps({'Stmt':cmd,'Workspace':workspace_name,'Opts':{}})
 
-def getData(server,cmdStr,show_total_count):
-	r = requests.post(server,data=cmd2JSON(cmdStr) , stream=True)
-	#print(r.raw)
-	#print("*************************")
+def getData(server,cmdStr,show_total_count , workspace_name):
+	r = requests.post(server,data=cmd2JSON(cmdStr, workspace_name) , stream=True)
 	total_row = 0
 	check_save = True
 	for content in json_stream(r.raw):
@@ -59,38 +57,32 @@ def resDataSave(bo_url , cmdstr):
 
 def printdata(data_str):
 	data = json.loads(data_str)
-	#print(data , type(data))
-	#print(data['Content'] , type(data['Content']))
 	count = 0
 	if(type(data['Content']) != dict):
-		#print("no return table can be dumpped, admin statement?")
-		#print("data:\n" + str(data['Content']))
-		#print(str(data['Content']))
 		if json.dumps(data['Content']) != "null":
-			print(json.dumps(data['Content'], indent=4))
+			if data['Content'] != "":
+				print(json.dumps(data['Content'], indent=4))
 		else:
-			print(json.dumps(data['Err'], indent=4))
+			if data['Err']!= "":
+				print(json.dumps(data['Err'], indent=4))
 		return 0	
 
 	if 'content' in data['Content'].keys():
 		for row in data['Content']['content']:
 			print(row)
-			#print(json.dumps(row))
-			#output.writerow(row)
 			count+=1
 	else:
-		#print(str(data['Content']))
-		print(json.dumps(data['Content'], indent=4))
-		#print("no content can be dumpped, admin statement?")
-		#print("data:\n" + str(data['Content']))
-		
+		if data['Content'] != "":
+			print(json.dumps(data['Content'], indent=4))
+	
 	return count
  
 def shell(connargs, shell_name, command, show_total_count=False):
 	bo_url = "http://" + connargs["host"] + ":" + str(connargs["port"]) + "/cmd"
-	print("bourl: " + bo_url)
+	print("send '" + command + "' to : " + bo_url)
+	workspace_name = connargs["workspace"]
 	now = time.time()
-	getData(bo_url, command, show_total_count) 
+	getData(bo_url, command, show_total_count , workspace_name) 
 	end = time.time()
 	print 'execution time: %ss' %  str(round((end - now),2))
 	

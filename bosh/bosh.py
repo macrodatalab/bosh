@@ -57,7 +57,7 @@ class adminCmd(cmd.Cmd):
         print "\tset timeout value"
 
 class baseCmd(cmd.Cmd):
-    assocword = [ 'create' , 'find', 'select' , 'build' , 'use' , 'apply' , 'get' ,'insert' , 'update' , 'alter', 'association', 'from' , 'by' , 'where' , 'query' , 'tables' , 'from', 'by', 'group by' , 'where' , 'tree' , 'table' ]
+    assocword = [ 'create' , 'find', 'select' , 'build' , 'use' , 'apply' , 'get' ,'insert' , 'update' , 'alter', 'association', 'from' , 'by' , 'where' , 'query' , 'tables' , 'from', 'by', 'group by' , 'where' , 'tree' , 'table' , 'workspace' ]
     def __init__(self):
         cmd.Cmd.__init__(self)
         try:
@@ -100,7 +100,20 @@ class baseCmd(cmd.Cmd):
     def do_USE(self,line):
         self.do_use(line)
     def do_use(self,line):
-	rpcshell.shell(self.connargs, "" , "use " + line)
+        cmdSplits=line.split()
+        if cmdSplits[0] != "workspace":
+            print "usage: use workspace <workspace_name>"
+            return
+        wsStr=cmdSplits[1] if len(cmdSplits) > 1 else ""
+        if wsStr=="default" or wsStr=="":
+            self.connargs["workspace"]=""
+       	    rpcshell.shell(self.connargs, "" , "use workspace default")
+        else:
+            self.connargs["workspace"]=wsStr
+            sqlStr="create workspace "+wsStr
+	    rpcshell.shell(self.connargs, "" , "use " + line)
+        print "switch to workspace:" +str(wsStr)
+	
     def do_SHOW(self,line):
         self.do_show(line)
     def do_show(self, line):
@@ -171,7 +184,7 @@ class baseCmd(cmd.Cmd):
     def do_info(self, line):
         print "host : " + self.connargs["host"]
         print "port : " + str(self.connargs["port"])
-        print "timeout : " + str(self.connargs["timeout"])
+        print "workspace : " + str(self.connargs["workspace"])
 
     def do_ADMIN(self, line):
         self.do_admin(line)
@@ -314,7 +327,7 @@ def main():
     newcmd.connargs["host"] = host
     newcmd.connargs["port"] = port
     newcmd.connargs["timeout"] = 9999
-#    newcmd.connargs["workspace"]= ""
+    newcmd.connargs["workspace"]= ""
     newcmd.connargs["opts"]=""
     newcmd.connargs["origin"]=bo_url
     newcmd.prompt = "bosh>"
