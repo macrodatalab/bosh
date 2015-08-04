@@ -5,7 +5,7 @@ These feature endpoints are made available through BigObject query language,
 **boql**.  The language are divided into two feature sets, with a single admin
 control for list and get metadata opertions.
 
-Refer to the full documentation [here](docs.bigobject.io/)
+Refer to the full documentation [here](https://docs.bigobject.io/)
 
 ## Getting BigObject service
 
