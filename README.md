@@ -1,16 +1,16 @@
 # BOSH - a BigObject shell
 
-bosh is a python command-line interface for a BigObject server
+**bosh** is a python command-line interface for a BigObject server
 
 ##System requirements
-Python 2.7.6
+Python 2.7
+
+## Getting BigObject
 
 BigObject server provides storage and analytic computation for your data.
 These feature endpoints are made available through BigObject query language,
 
 Refer to the full documentation [here](https://docs.bigobject.io/)
-
-## Getting BigObject
 
 We recommend you build your BigObject server through
 [Docker Hub](https://registry.hub.docker.com/u/macrodata/bigobject/).  Other options available through custom
