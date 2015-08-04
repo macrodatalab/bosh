@@ -2,7 +2,7 @@
 
 BigObject service provides storage and analytic computation for your data.
 These feature endpoints are made available through BigObject query language,
-**boql**.  The language are divided into two feature sets, with a single admin
+The language are divided into two feature sets, with a single admin
 control for list and get metadata opertions.
 
 Refer to the full documentation [here](https://docs.bigobject.io/)
@@ -26,7 +26,7 @@ $ pip install bosh
 
 Verify bosh is install be excuting **bosh** in your terminal
  
-use the environment variable **BIGOBJECT_URL**  to set the BigObject server url
+Use the environment variable **BIGOBJECT_URL**  to set the BigObject server url
 
 ex. BIGOBJECT_URL=bo://127.0.0.1:9090 bosh
 
