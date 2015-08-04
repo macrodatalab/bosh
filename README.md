@@ -27,7 +27,9 @@ $ pip install bosh
 Verify bosh is install be excuting **bosh** in your terminal
  
 BIGOBJECT_URL is used to set the BigObject server url
+
 ex. BIGOBJECT_URL=bo://127.0.0.1:9090 bosh
+
 The default BIGOBJECT_URL setting: localhost:9090 
 
 ```bash
