@@ -49,7 +49,7 @@ bosh>
 Load a table data from a CSV file. The table should be pre-created.
 ```bash
 bosh>admin
-bosh:admin>csvloader data.csv data
+bosh:admin>csvloader data.csv datatable
 ```
 
 ## luaupload
