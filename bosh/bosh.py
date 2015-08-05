@@ -10,6 +10,16 @@ import getpass
 import traceback
 
 class adminCmd(cmd.Cmd):
+    adminword = [ 'luaupload' , 'LUAUPLOAD', 'CSVLOADER' , 'csvloader']
+    def completedefault(self, text, line, begidx, endidx):
+        if not text:
+            completions = self.adminword[:]
+        else:
+            completions = [ f
+            for f in self.adminword
+            if f.startswith(text)
+            ]
+        return completions
     def emptyline(self):
         pass
     def do_EXIT(self, line):
@@ -22,6 +32,21 @@ class adminCmd(cmd.Cmd):
         return True
     def do_quit(self, line):
         return True
+    def do_LUAUPLOAD(self, line):
+	self.do_luaupload(line)
+    def do_luaupload(self, line):
+	import requests
+	if line != "":
+		try:
+			payload = open(line, 'rb')
+			server = 'http://' + self.connargs["host"] + ":" + str(self.connargs["port"]) + "/script/" + line
+		        r = requests.post(server, data=payload, headers={'Content-Type':'application/x-www-form-urlencoded'})
+			print(r.text)	
+		except IOError:
+		        print ('cannot open file \"' + line + '\"')
+	else:
+		print("luaupload <lua file name>")
+	
     def do_sethost(self, line):
         if line != "":
             self.connargs["host"] = line
@@ -43,7 +68,7 @@ class adminCmd(cmd.Cmd):
     def do_info(self, line):
         print "host : " + self.connargs["host"]
         print "port : " + str(self.connargs["port"])
-        print "timeout : " + str(self.connargs["timeout"])
+        print "workspace : " + str(self.connargs["workspace"])
 
     def help_psql(self):
         print "\trun postgresql client. psql required"
