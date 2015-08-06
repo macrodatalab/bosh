@@ -41,5 +41,27 @@ Welcome to the BigObject shell
 
 enter 'help' for listing commands
 enter 'quit'/'exit' to exit bosh
-$ bosh>
+bosh>
 ```
+
+# bosh commands
+## csvloader
+Load a table data from a CSV file (ex. data.csv). The table (ex. datatable) should be pre-created.
+```bash
+bosh>admin
+bosh:admin>csvloader data.csv datatable
+```
+
+## luaupload
+Upload a lua script to the BigObject server
+```bash
+bosh>admin
+bosh:admin>luaupload test.lua
+```
+
+## change server
+```bash
+bosh>sethost 192.168.1.111
+bosh>setport 9090
+```
+
