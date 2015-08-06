@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='bosh',
-    version='0.2.3',
+    version='0.2.4444',
     packages=find_packages(),
 
     install_requires=[

@@ -24,25 +24,26 @@ def getData(server,cmdStr,show_total_count , workspace_name):
 				break				
 
 	if show_total_count == True :
-		print("total row : " + str(total_row))	
+		print("=============\ntotal row : " + str(total_row))	
 
 def json_stream(fp):
 	for line in fp:
 		#print(line)
 		yield json.loads(line)
 
-def resDataSave(bo_url , cmdstr):
-	confirmStr= "Size of data exceeded display limit, dump to csv format? (yes/no)"
-        import fileinput
-        print confirmStr
-        while True:
-        	choice=raw_input()
-                if choice=="yes" or choice=="y":
-        	        break
-                elif choice=="no" or choice=="n":
-        		return False
-        	else:
-        		print confirmStr
+def resDataSave(bo_url , cmdstr , passQ = False , dumptype='CSV', dump_filename='dump.csv'):
+	if passQ == False:
+		confirmStr= "=============\nSize of data exceeded display limit, dump to csv format? (yes/no)"
+		import fileinput
+		print confirmStr
+		while True:
+			choice=raw_input()
+		        if choice=="yes" or choice=="y":
+			        break
+		        elif choice=="no" or choice=="n":
+				return False
+			else:
+				print confirmStr
 	#bo_host = bo_url.split(":")[1][2:]
 	#bo_port = bo_url.split(":")[2][:-4]
 	import subprocess
@@ -53,8 +54,8 @@ def resDataSave(bo_url , cmdstr):
 	lib_path = get_python_lib() 
 
 	rest = subprocess.Popen(["python", lib_path + "/dumpRes/borestful.py" , bo_url , cmdstr ], stdout=subprocess.PIPE)
-	tocsv = subprocess.Popen(["python", lib_path + "/dumpRes/bojson2file.py", "CSV", boshcwd + "/dump.csv"] , stdin=rest.stdout)
-	print("dumping the data to dump.csv...")
+	tocsv = subprocess.Popen(["python", lib_path + "/dumpRes/bojson2file.py", dumptype, boshcwd + "/" + dump_filename] , stdin=rest.stdout)
+	print("dumping the data to " + dump_filename + " , type: " + dumptype + " ...")
 	rest.wait()
 	tocsv.wait()
 	return True
@@ -90,12 +91,20 @@ def printdata(data_str):
  
 def shell(connargs, shell_name, command, show_total_count=False):
 	bo_url = "http://" + connargs["host"] + ":" + str(connargs["port"]) + "/cmd"
-	print("send '" + command + "' to : " + bo_url)
 	workspace_name = connargs["workspace"]
 	now = time.time()
-	getData(bo_url, command, show_total_count , workspace_name) 
+	if command.find(">>>") > 0:
+		real_cmd = command.split(">>>")[0].strip()
+		dump_name = command.split(">>>")[1].strip()
+		dump_type = 'CSV';
+		#print(real_cmd , " ||| " , dump_name)
+		if dump_name.find(".xlsx") > 0 or dump_name.find(".XLSX") > 0:
+			dump_type = 'XLSX'
+		resDataSave(bo_url , real_cmd , True, dump_type , dump_name)
+	else:
+		getData(bo_url, command, show_total_count , workspace_name) 
 	end = time.time()
-	print 'execution time: %ss' %  str(round((end - now),2))
+	print '-- execution time: %ss' %  str(round((end - now),2))
 	
 if __name__ == "__main__":
 	connargs={}

@@ -91,7 +91,7 @@ def printLine(csv_file):
 
     f.close()
 
-def csvload(connargs, csv_file, bt_name ,insert_line=30000 ):
+def csvload(connargs, csv_file, bt_name ,insert_line=30000, noncheck_mod=False):
 	errorfile = open('errorinsert.txt', 'w')
 
 	addr_info = connargs['origin']
@@ -122,7 +122,11 @@ def csvload(connargs, csv_file, bt_name ,insert_line=30000 ):
 		ascii_check(".".join(buff))
 	    except:
 		buff=forcedecoding(buff)
-	    data_str += "('"+"','".join(filterOutNonDisplayable(buff)) + "')"
+
+	    if noncheck_mod == False:
+		data_str += "('"+"','".join(filterOutNonDisplayable(buff)) + "')"
+	    else:
+		data_str += "('"+"','".join(buff) + "')"   		
 	    
 	    if (line_count % insert_line) == 0 and line_count != 1:
 		try:

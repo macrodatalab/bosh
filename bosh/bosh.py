@@ -63,7 +63,11 @@ class adminCmd(cmd.Cmd):
         if line != "":
             input_line = line.split();
             if len(input_line) >= 2:
-                print csvloader.csvload(self.connargs, input_line[0] , input_line[1])
+		if len(input_line) == 3 and input_line[2] == 'boost':
+			noncheck_mod = True
+		else:
+			noncheck_mod = False
+                print csvloader.csvload(self.connargs, input_line[0] , input_line[1] , 30000 , noncheck_mod)
             else:
                 print "csvloader <csv_file> <bt_name>"
     def do_info(self, line):
@@ -123,23 +127,6 @@ class baseCmd(cmd.Cmd):
         self.do_build(line)
     def do_build(self, line):
         rpcshell.shell(self.connargs, "" , "build " + line)
-    def do_USE(self,line):
-        self.do_use(line)
-    def do_use(self,line):
-        cmdSplits=line.split()
-        if cmdSplits[0] != "workspace":
-            print "usage: use workspace <workspace_name>"
-            return
-        wsStr=cmdSplits[1] if len(cmdSplits) > 1 else ""
-        if wsStr=="default" or wsStr=="":
-            self.connargs["workspace"]=""
-       	    rpcshell.shell(self.connargs, "" , "use workspace default")
-        else:
-            self.connargs["workspace"]=wsStr
-            sqlStr="create workspace "+wsStr
-	    rpcshell.shell(self.connargs, "" , "use " + line)
-        print "switch to workspace:" +str(wsStr)
-	
     def do_SHOW(self,line):
         self.do_show(line)
     def do_show(self, line):
@@ -164,10 +151,6 @@ class baseCmd(cmd.Cmd):
         self.do_get(line)
     def do_get(self, line):
         rpcshell.shell(self.connargs, "" , "get " + line , True)  
-    def do_DROP(self,line):
-        self.do_drop(line)
-    def do_drop(self, line):
-        rpcshell.shell(self.connargs, "" , "drop " + line)
     def do_TRIM(self,line):
         self.do_trim(line)
     def do_trim(self, line):
@@ -191,6 +174,38 @@ class baseCmd(cmd.Cmd):
     def do_alter(self, line):
         if line != "":
             print rpcshell.shell(self.connargs, "" , "alter " + line)       
+
+    def do_USE(self,line):
+        self.do_use(line)
+    def do_use(self,line):
+        cmdSplits=line.split()
+        if cmdSplits[0] != "workspace":
+            print "usage: use workspace <workspace_name>"
+            return
+        wsStr=cmdSplits[1] if len(cmdSplits) > 1 else ""
+        if wsStr=="default" or wsStr=="":
+            self.connargs["workspace"]=""
+       	    rpcshell.shell(self.connargs, "" , "use workspace default")
+        else:
+            self.connargs["workspace"]=wsStr
+            sqlStr="create workspace "+wsStr
+	    rpcshell.shell(self.connargs, "" , "use " + line)
+        print "switch to workspace:" +str(wsStr)
+
+    def do_DROP(self,line):
+        self.do_drop(line)
+    def do_drop(self, line):
+	cmdSplits=line.split()
+        if cmdSplits[0] == "workspace":
+	        wsStr=cmdSplits[1] if len(cmdSplits) > 1 else ""
+	        if wsStr=="":
+	            print("usage: drop workspace <workspace_name>")
+	        else:
+	            rpcshell.shell(self.connargs, "" , "drop " + line)
+	            self.connargs["workspace"]=""
+	        print "switch to default workspace"
+	else:
+	        rpcshell.shell(self.connargs, "" , "drop " + line)
 
     ##################### bosh ###########################
     def do_EXIT(self, line):
