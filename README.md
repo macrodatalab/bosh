@@ -75,6 +75,7 @@ bosh>setport 9090
 ```
 
 ## dump data to csv
+Automatically dump to csv file (default: return data > 1000 rows)
 ```bash
 bosh>select * from sales
 1,3226,2557,am/pm,2013-01-01 00:04:04,8,52.24
@@ -87,4 +88,10 @@ bosh>select * from sales
 570,5218,2032,am/pm,2013-01-05 00:29:16,4,50.72
 Size of data exceeded display limit, dump to csv format? (yes/no)
 ```
+Manually dump 
 
+```bash
+bosh>select * from sales >>> dump1.csv
+
+bosh>select * from sales >>> dump2.xlsx
+```
