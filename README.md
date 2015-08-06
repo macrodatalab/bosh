@@ -44,12 +44,14 @@ enter 'quit'/'exit' to exit bosh
 bosh>
 ```
 
-# bosh commands
+# bosh features
 ## csvloader
 Load a table data from a CSV file (ex. data.csv). The table (ex. datatable) should be pre-created.
 ```bash
 bosh>admin
 bosh:admin>csvloader data.csv datatable
+bosh:admin>exit
+bosh>
 ```
 
 ## luaupload
@@ -57,11 +59,27 @@ Upload a lua script to the BigObject server
 ```bash
 bosh>admin
 bosh:admin>luaupload test.lua
+bosh:admin>exit
+bosh>
 ```
 
 ## change server
 ```bash
 bosh>sethost 192.168.1.111
 bosh>setport 9090
+```
+
+## dump data to csv
+```bash
+bosh>select * from sales
+1,3226,2557,am/pm,2013-01-01 00:04:04,8,52.24
+2,6691,2631,am/pm,2013-01-01 00:11:26,4,39.72
+2,6691,1833,am/pm,2013-01-01 00:21:02,1,6.9
+
+                ...
+568,7717,4373,7-11,2013-01-05 00:16:12,3,33.72
+569,7928,3351,walmart,2013-01-05 00:25:16,2,20.92
+570,5218,2032,am/pm,2013-01-05 00:29:16,4,50.72
+Size of data exceeded display limit, dump to csv format? (yes/no)
 ```
 
