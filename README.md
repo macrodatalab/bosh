@@ -96,4 +96,4 @@ bosh>select * from sales >>> dump2.xlsx
 ```
 The Function only work on statement with a return table such as **FIND**, **SELECT**, **GET**, and **\*APPLY**
 
-* APPLY with the returnTable auxiliary clause
+\*APPLY with the returnTable auxiliary clause
