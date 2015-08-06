@@ -53,6 +53,11 @@ bosh:admin>csvloader data.csv datatable
 bosh:admin>exit
 bosh>
 ```
+If you ensure the CSV file without any control character, use 'boost' mode to speed up data insertion.
+```bash
+bosh:admin>csvloader data.csv datatable boost
+```
+
 
 ## luaupload
 Upload a lua script to the BigObject server
