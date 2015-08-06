@@ -37,6 +37,7 @@ class adminCmd(cmd.Cmd):
     def do_luaupload(self, line):
 	import requests
 	if line != "":
+		#print(line)
 		try:
 			payload = open(line, 'rb')
 			server = 'http://' + self.connargs["host"] + ":" + str(self.connargs["port"]) + "/script/" + line

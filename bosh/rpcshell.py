@@ -1,7 +1,11 @@
+# encoding=utf8  
 import requests
 import json
 import sys
 import time
+
+reload(sys)  
+sys.setdefaultencoding('utf8')
 
 
 def cmd2JSON(cmd , workspace_name=""):
@@ -69,7 +73,14 @@ def printdata(data_str):
 
 	if 'content' in data['Content'].keys():
 		for row in data['Content']['content']:
-			print(row)
+			#print(row)
+			print_row=""
+			for record in row:
+				if print_row != "":
+					print_row += ","
+                    		print_row += str(record).decode('utf-8')
+			print(print_row)		
+			#print(row)
 			count+=1
 	else:
 		if data['Content'] != "":
