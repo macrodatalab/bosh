@@ -88,10 +88,12 @@ bosh>select * from sales
 570,5218,2032,am/pm,2013-01-05 00:29:16,4,50.72
 Size of data exceeded display limit, dump to csv format? (yes/no)
 ```
-Manually dump 
-
+Manually dump
 ```bash
 bosh>select * from sales >>> dump1.csv
 
 bosh>select * from sales >>> dump2.xlsx
 ```
+The Function only work on statement with a return table such as **FIND**, **SELECT**, **GET**, and **\*APPLY**
+
+* APPLY with the returnTable auxiliary clause
