@@ -106,6 +106,66 @@ def shell(connargs, shell_name, command, show_total_count=False):
 	end = time.time()
 	print '-- execution time: %ss' %  str(round((end - now),2))
 	
+
+
+def return_getData(server,cmdStr, no_print , workspace_name):
+	ret_str = ""
+	r = requests.post(server,data=cmd2JSON(cmdStr, workspace_name) , stream=True)
+	for content in json_stream(r.raw):
+		ret_str = ret_str + return_printdata(json.dumps(content) , no_print)
+	return ret_str
+	
+def return_printdata(data_str , no_print=False):
+	data = json.loads(data_str)
+	#count = 0
+	return_str = ""
+
+	if(type(data['Content']) != dict):
+		if json.dumps(data['Content']) != "null":
+			if data['Content'] != "":
+				if no_print == False:
+					print(json.dumps(data['Content'], indent=4))
+				return_str = json.dumps(data['Content'])
+		else:
+			if data['Err']!= "":
+				if no_print == False:
+					print(json.dumps(data['Err'], indent=4))
+				return_str = json.dumps(data['Err'])
+		return return_str	
+
+	if 'content' in data['Content'].keys():
+		for row in data['Content']['content']:
+			#print(row)
+			print_row=""
+			for record in row:
+				if print_row != "":
+					print_row += ","
+                    		print_row += str(record).decode('utf-8')
+			if no_print == False:
+				print(print_row)	
+			return_str = return_str + print_row	
+			#print(row)
+			count+=1
+	else:
+		if data['Content'] != "":
+			if no_print == False:
+				print(json.dumps(data['Content'], indent=4))
+			return_str = json.dumps(data['Content'])
+	
+	return return_str
+ 
+
+def shell_return(connargs, shell_name, command, no_print=False):
+	bo_url = "http://" + connargs["host"] + ":" + str(connargs["port"]) + "/cmd"
+	workspace_name = connargs["workspace"]
+	now = time.time()
+	temp = return_getData(bo_url, command, no_print , workspace_name) 
+	end = time.time()
+	if no_print == False:
+		print '-- execution time: %ss' %  str(round((end - now),2))
+	return temp
+
+
 if __name__ == "__main__":
 	connargs={}
 	connargs["host"] = "localhost"

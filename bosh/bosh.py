@@ -130,7 +130,18 @@ class baseCmd(cmd.Cmd):
     def do_SHOW(self,line):
         self.do_show(line)
     def do_show(self, line):
-	rpcshell.shell(self.connargs, "","show " + line)
+	#rpcshell.shell(self.connargs, "","show " + line)
+	if line.strip() == 'tables' or line.strip() == 'tree':
+		return_var = rpcshell.shell_return(self.connargs, "","show " + line)
+		list1 = re.split(', ',return_var[1:-1].replace('"', ""))
+		for l_e in list1:
+			if not l_e in self.assocword:
+				self.assocword.append(l_e)
+		#print self.assocword
+		
+	else:
+		rpcshell.shell(self.connargs, "","show " + line)
+
     def do_DESC(self, line):
         self.do_desc(line)
     def do_desc(self, line):
@@ -208,6 +219,19 @@ class baseCmd(cmd.Cmd):
 	        rpcshell.shell(self.connargs, "" , "drop " + line)
 
     ##################### bosh ###########################
+    def init_complete(self):
+	return_var = rpcshell.shell_return(self.connargs, "","show tables" , True)
+	list_table = re.split(', ',return_var[1:-1].replace('"', ""))
+	for tab1 in list_table:
+		if not tab1 in self.assocword:
+			self.assocword.append(tab1)
+
+	return_var = rpcshell.shell_return(self.connargs, "","show tree" , True)
+	list_tree = re.split(', ',return_var[1:-1].replace('"', ""))
+	for tree1 in list_tree:
+		if not tree1 in self.assocword:
+			self.assocword.append(tree1)
+
     def do_EXIT(self, line):
         return True
     def do_exit(self, line):
@@ -373,7 +397,7 @@ def main():
     newcmd.connargs["origin"]=bo_url
     newcmd.prompt = "bosh>"
     newcmd.intro = "\nWelcome to the BigObject shell\n\nenter 'help' for listing commands\nenter 'quit'/'exit' to exit bosh"
-
+    newcmd.init_complete()
     try:
         newcmd.cmdloop()
     except KeyboardInterrupt:
