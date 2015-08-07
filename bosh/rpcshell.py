@@ -11,8 +11,8 @@ sys.setdefaultencoding('utf8')
 def cmd2JSON(cmd , workspace_name=""):
 	return json.dumps({'Stmt':cmd,'Workspace':workspace_name,'Opts':{}})
 
-def getData(server,cmdStr,show_total_count , workspace_name):
-	r = requests.post(server,data=cmd2JSON(cmdStr, workspace_name) , stream=True)
+def getData(server,cmdStr,show_total_count , workspace_name , timeout=9999):
+	r = requests.post(server,data=cmd2JSON(cmdStr, workspace_name) , stream=True , timeout=timeout)
 	total_row = 0
 	check_save = True
 	for content in json_stream(r.raw):
@@ -102,15 +102,15 @@ def shell(connargs, shell_name, command, show_total_count=False):
 			dump_type = 'XLSX'
 		resDataSave(bo_url , real_cmd , True, dump_type , dump_name)
 	else:
-		getData(bo_url, command, show_total_count , workspace_name) 
+		getData(bo_url, command, show_total_count , workspace_name , connargs["timeout"]) 
 	end = time.time()
 	print '-- execution time: %ss' %  str(round((end - now),2))
 	
 
 
-def return_getData(server,cmdStr, no_print , workspace_name):
+def return_getData(server,cmdStr, no_print , workspace_name , timeout=9999):
 	ret_str = ""
-	r = requests.post(server,data=cmd2JSON(cmdStr, workspace_name) , stream=True)
+	r = requests.post(server,data=cmd2JSON(cmdStr, workspace_name) , stream=True , timeout=timeout)
 	for content in json_stream(r.raw):
 		ret_str = ret_str + return_printdata(json.dumps(content) , no_print)
 	return ret_str
@@ -159,7 +159,7 @@ def shell_return(connargs, shell_name, command, no_print=False):
 	bo_url = "http://" + connargs["host"] + ":" + str(connargs["port"]) + "/cmd"
 	workspace_name = connargs["workspace"]
 	now = time.time()
-	temp = return_getData(bo_url, command, no_print , workspace_name) 
+	temp = return_getData(bo_url, command, no_print , workspace_name , connargs["timeout"]) 
 	end = time.time()
 	if no_print == False:
 		print '-- execution time: %ss' %  str(round((end - now),2))

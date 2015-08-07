@@ -73,7 +73,8 @@ class adminCmd(cmd.Cmd):
     def do_info(self, line):
         print "host : " + self.connargs["host"]
         print "port : " + str(self.connargs["port"])
-        print "workspace : " + str(self.connargs["workspace"])
+        print "workspace : " + self.connargs["workspace"]
+        print "timeout : " + self.connargs["timeout"]
 
     def help_psql(self):
         print "\trun postgresql client. psql required"
@@ -220,18 +221,26 @@ class baseCmd(cmd.Cmd):
 
     ##################### bosh ###########################
     def init_complete(self):
-	return_var = rpcshell.shell_return(self.connargs, "","show tables" , True)
-	list_table = re.split(', ',return_var[1:-1].replace('"', ""))
-	for tab1 in list_table:
-		if not tab1 in self.assocword:
-			self.assocword.append(tab1)
+	tmp_timeout = self.connargs["timeout"]
+	self.connargs["timeout"]=1
+	try:
+		return_var = rpcshell.shell_return(self.connargs, "","show tables" , True)
+		list_table = re.split(', ',return_var[1:-1].replace('"', ""))
+		for tab1 in list_table:
+			if not tab1 in self.assocword:
+				self.assocword.append(tab1)
 
-	return_var = rpcshell.shell_return(self.connargs, "","show tree" , True)
-	list_tree = re.split(', ',return_var[1:-1].replace('"', ""))
-	for tree1 in list_tree:
-		if not tree1 in self.assocword:
-			self.assocword.append(tree1)
+		return_var = rpcshell.shell_return(self.connargs, "","show tree" , True)
+		list_tree = re.split(', ',return_var[1:-1].replace('"', ""))
+		for tree1 in list_tree:
+			if not tree1 in self.assocword:
+				self.assocword.append(tree1)
+	except:
+		print("\n\n==========================================================" )
+		print("= Connection Error, please check host and port setting.  =" )
+		print("==========================================================" )
 
+	self.connargs["timeout"]=tmp_timeout
     def do_EXIT(self, line):
         return True
     def do_exit(self, line):
@@ -249,7 +258,8 @@ class baseCmd(cmd.Cmd):
     def do_info(self, line):
         print "host : " + self.connargs["host"]
         print "port : " + str(self.connargs["port"])
-        print "workspace : " + str(self.connargs["workspace"])
+        print "workspace : " + self.connargs["workspace"]
+	print "timeout : " + self.connargs["timeout"]
 
     def do_ADMIN(self, line):
         self.do_admin(line)
