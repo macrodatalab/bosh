@@ -100,4 +100,4 @@ The Function only work on statement with a return table such as **FIND**, **SELE
 
 ## Autocomplete
 
-bosh automatacally load table and tree names into the autocomplete keywords when bosh initization and perform "show tables" and "show tree".
+bosh automatacally load table and tree names into the autocomplete keywords when bosh init, perform "show tables" and "show tree".
