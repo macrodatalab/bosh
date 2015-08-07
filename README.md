@@ -97,3 +97,7 @@ bosh>select * from sales >>> dump2.xlsx
 The Function only work on statement with a return table such as **FIND**, **SELECT**, **GET**, and **\*APPLY**
 
 \*APPLY with the returnTable auxiliary clause
+
+## Autocomplete
+
+bosh automatacally load table and tree names into the autocomplete keywords when bosh initization and perform "show tables" and "show tree".
