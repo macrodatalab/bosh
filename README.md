@@ -5,6 +5,8 @@
 ##System requirements
 Python 2.7
 
+Packages: bosh-dumpRes
+
 ## Getting BigObject
 
 BigObject server provides storage and analytic computation for your data.
