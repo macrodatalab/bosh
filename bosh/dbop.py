@@ -46,7 +46,7 @@ def copy(line , bo_host , bo_port):
 		return
 
 def showdb():
-	print(d_type, d_host, d_port, d_user, d_db)
+	print("db type:\t" + d_type + "\ndb name:\t" + d_db + "\nhost:\t\t" + d_host + ":" + d_port + "\nuser:\t\t" + d_user )
 
 def setdb():
 	global d_type, d_host, d_port, d_user, d_pass, d_db
