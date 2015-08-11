@@ -83,14 +83,14 @@ bosh>setdb
 >>> port [5432] : 3306
 >>> username [postgres] : root 
 >>> Password (hidden) : 
->>> database name [testBench] : 
+>>> database name [test] : 
 bosh>copy sales
      ...
 bosh>append sales
      ...
 bosh>showdb
 db type:	mysql
-db name:	testBench
+db name:	test
 host:		localhost:3306
 user:		root
 ```
