@@ -47,6 +47,12 @@ bosh>
 ```
 
 # bosh features
+## change server
+```bash
+bosh>sethost 192.168.1.111
+bosh>setport 9090
+```
+
 ## csvloader
 Load a table data from a CSV file (ex. data.csv). The table (ex. datatable) should be pre-created.
 ```bash
@@ -110,9 +116,3 @@ The Function only work on statement with a return table such as **FIND**, **SELE
 ## Autocomplete
 
 bosh automatacally load table and tree names into the autocomplete keywords when bosh init, perform "show tables" and "show tree".
-
-## change server
-```bash
-bosh>sethost 192.168.1.111
-bosh>setport 9090
-```
