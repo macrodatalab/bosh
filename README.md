@@ -5,7 +5,7 @@
 ##System requirements
 Python 2.7
 
-Packages: bosh-dumpRes
+Packages: bosh-dumpRes, bosh-db2bt
 
 ## Getting BigObject
 
@@ -60,7 +60,6 @@ If you ensure the CSV file without any control character, use 'boost' mode to sp
 bosh:admin>csvloader data.csv datatable boost
 ```
 
-
 ## luaupload
 Upload a lua script to the BigObject server
 ```bash
@@ -70,10 +69,18 @@ bosh:admin>exit
 bosh>
 ```
 
-## change server
+## copy/append tables from mysql/postgresql database
 ```bash
-bosh>sethost 192.168.1.111
-bosh>setport 9090
+bosh>setdb
+>>> database type [postgresql] : 
+>>> host [localhost] : 
+>>> port [5432] : 
+>>> username [postgres] : 
+>>> Password (hidden) : 
+>>> database name [testBench] : 
+bosh>copy sales
+     ...
+bosh>append sales
 ```
 
 ## dump data to csv
@@ -103,3 +110,9 @@ The Function only work on statement with a return table such as **FIND**, **SELE
 ## Autocomplete
 
 bosh automatacally load table and tree names into the autocomplete keywords when bosh init, perform "show tables" and "show tree".
+
+## change server
+```bash
+bosh>sethost 192.168.1.111
+bosh>setport 9090
+```
