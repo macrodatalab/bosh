@@ -78,10 +78,10 @@ bosh>
 ## copy/append tables from mysql/postgresql database
 ```bash
 bosh>setdb
->>> database type [postgresql] : 
+>>> database type [postgresql] : mysql
 >>> host [localhost] : 
->>> port [5432] : 
->>> username [postgres] : 
+>>> port [5432] : 3306
+>>> username [postgres] : root 
 >>> Password (hidden) : 
 >>> database name [testBench] : 
 bosh>copy sales
