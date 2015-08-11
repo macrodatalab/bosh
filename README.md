@@ -87,6 +87,12 @@ bosh>setdb
 bosh>copy sales
      ...
 bosh>append sales
+     ...
+bosh>showdb
+db type:	mysql
+db name:	testBench
+host:		localhost:3306
+user:		root
 ```
 
 ## dump data to csv
