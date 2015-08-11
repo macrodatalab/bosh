@@ -6,8 +6,9 @@ import re
 import csvloader
 from urlparse import urlparse
 import tools
-import getpass
+#import getpass
 import traceback
+import dbop
 
 class adminCmd(cmd.Cmd):
     adminword = [ 'luaupload' , 'LUAUPLOAD', 'CSVLOADER' , 'csvloader']
@@ -32,6 +33,10 @@ class adminCmd(cmd.Cmd):
         return True
     def do_quit(self, line):
         return True
+    def do_LS(self,line):
+	self.do_ls(line)
+    def do_ls(self,line):
+	print '\n'.join(str(p) for p in os.listdir(".")) 
     def do_LUAUPLOAD(self, line):
 	self.do_luaupload(line)
     def do_luaupload(self, line):
@@ -74,7 +79,7 @@ class adminCmd(cmd.Cmd):
         print "host : " + self.connargs["host"]
         print "port : " + str(self.connargs["port"])
         print "workspace : " + self.connargs["workspace"]
-        print "timeout : " + self.connargs["timeout"]
+        print "timeout : " + str(self.connargs["timeout"])
 
     def help_psql(self):
         print "\trun postgresql client. psql required"
@@ -259,7 +264,7 @@ class baseCmd(cmd.Cmd):
         print "host : " + self.connargs["host"]
         print "port : " + str(self.connargs["port"])
         print "workspace : " + self.connargs["workspace"]
-	print "timeout : " + self.connargs["timeout"]
+	print "timeout : " + str(self.connargs["timeout"])
 
     def do_ADMIN(self, line):
         self.do_admin(line)
@@ -268,7 +273,6 @@ class baseCmd(cmd.Cmd):
         newcmd.connargs = self.connargs
         newcmd.prompt = self.prompt[:len(self.prompt)-1] + ":admin>"
         newcmd.cmdloop()
-
     def do_PRINT(self,line):
         self.do_print(line)
     def do_print(self,line):
@@ -333,18 +337,44 @@ class baseCmd(cmd.Cmd):
     def do_listvar(self, line):
         print "all variables: "
         print self.get_bosh_global_var_with_filter()
-
+    def do_SETHOST(self, line):
+	self.do_sethost(line)
     def do_sethost(self, line):
         if line != "":
             self.connargs["host"] = line
+
+    def do_SETPORT(self, line):
+	self.do_setport(line)
     def do_setport(self, line):
         if line != "":
             self.connargs["port"] = line
+
     def default(self, line):
 	try:
         	exec(line) in globals()
         except:
         	traceback.print_exc()
+	
+    ##### db test ######################################
+    def do_SHOWDB(self, line):
+	self.do_showdb(line)
+    def do_showdb(self, line):
+	dbop.showdb()
+
+    def do_SETDB(self, line):
+	self.do_setdb(line)
+    def do_setdb(self, line):
+	dbop.setdb()
+
+    def do_COPY(self, line):
+	self.do_copy(line)
+    def do_copy(self, line):
+	dbop.copy(line , self.connargs["host"], self.connargs["port"])
+
+    def do_APPEND(self, line):
+	self.do_append(line)
+    def do_append(self, line):
+	dbop.append(line , self.connargs["host"], self.connargs["port"])
 
     ############## help ################
     def help_column(self):
