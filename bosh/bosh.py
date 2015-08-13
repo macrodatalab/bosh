@@ -371,6 +371,11 @@ class baseCmd(cmd.Cmd):
     def do_copy(self, line):
 	dbop.copy(line , self.connargs["host"], self.connargs["port"])
 
+    def do_LOAD(self, line):
+	self.do_copy(line)
+    def do_load(self, line):
+	dbop.load(line , self.connargs["host"], self.connargs["port"])
+
     def do_APPEND(self, line):
 	self.do_append(line)
     def do_append(self, line):
