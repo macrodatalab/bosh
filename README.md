@@ -75,7 +75,7 @@ bosh:admin>exit
 bosh>
 ```
 
-## copy/append tables from mysql/postgresql database
+## copy/append/load tables from mysql/postgresql database
 ```bash
 bosh>setdb
 >>> database type [postgresql] : mysql
@@ -87,6 +87,8 @@ bosh>setdb
 bosh>copy sales
      ...
 bosh>append sales
+     ...
+bosh>load sales by select * from sales limit 100
      ...
 bosh>showdb
 db type:	mysql
