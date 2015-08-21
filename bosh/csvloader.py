@@ -10,6 +10,7 @@ import traceback
 import binascii
 from _json import encode_basestring_ascii as ascii_check
 import unicodedata
+import json
 
 reload(sys)  # Reload does the trick!
 sys.setdefaultencoding('UTF8')
@@ -130,7 +131,8 @@ def csvload(connargs, csv_file, bt_name ,insert_line=30000, noncheck_mod=False):
 	    
 	    if (line_count % insert_line) == 0 and line_count != 1:
 		try:
-			rpcshell.shell(connargs, "" , insert_prefix + data_str)
+			#print ("######" + json.dumps(data_str, ensure_ascii=False)[1:-1] )
+			rpcshell.shell(connargs, "" , insert_prefix + json.dumps(data_str, ensure_ascii=False)[1:-1])
 		except:
 			traceback.print_exc()
 			print "Unexpected error:" + str(sys.exc_info()[0])
@@ -148,7 +150,9 @@ def csvload(connargs, csv_file, bt_name ,insert_line=30000, noncheck_mod=False):
 
 	if (line_count % insert_line) != 0:
 	    try:
-		insert_stmt_all = insert_prefix + data_str[:len(data_str)-1]
+		#insert_stmt_all = insert_prefix + json.dumps(data_str[:len(data_str)-1], ensure_ascii=False)
+		insert_stmt_all = insert_prefix + json.dumps(data_str, ensure_ascii=False)[1:-1]
+		#print (insert_stmt_all)
 		rpcshell.shell(connargs, "" , insert_stmt_all)
 	    except:
 		traceback.print_exc()

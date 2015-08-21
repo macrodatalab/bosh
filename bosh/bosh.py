@@ -68,11 +68,18 @@ class adminCmd(cmd.Cmd):
         if line != "":
             input_line = line.split();
             if len(input_line) >= 2:
-		if len(input_line) == 3 and input_line[2] == 'boost':
+		row_size_in_a_stmt = 30000
+		noncheck_mod = False
+		if len(input_line) >= 3 and input_line[2] == 'boost':
 			noncheck_mod = True
+			if len(input_line) == 4:
+				row_size_in_a_stmt = int(input_line[3])
+		elif len(input_line) == 3 and input_line[2] != 'boost': 			
+			row_size_in_a_stmt = int(input_line[2])
 		else:
 			noncheck_mod = False
-                print csvloader.csvload(self.connargs, input_line[0] , input_line[1] , 30000 , noncheck_mod)
+			
+                print csvloader.csvload(self.connargs, input_line[0] , input_line[1] , row_size_in_a_stmt , noncheck_mod)
             else:
                 print "csvloader <csv_file> <bt_name>"
     def do_info(self, line):

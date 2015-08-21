@@ -13,6 +13,7 @@ def cmd2JSON(cmd , workspace_name=""):
 
 def getData(server,cmdStr,show_total_count , workspace_name , timeout=9999):
 	r = requests.post(server,data=cmd2JSON(cmdStr, workspace_name) , stream=True , timeout=timeout)
+	#print(r)
 	total_row = 0
 	check_save = True
 	for content in json_stream(r.raw):
@@ -93,7 +94,7 @@ def shell(connargs, shell_name, command, show_total_count=False):
 	bo_url = "http://" + connargs["host"] + ":" + str(connargs["port"]) + "/cmd"
 	workspace_name = connargs["workspace"]
 	now = time.time()
-	if command.find(">>>") > 0:
+	if command.find(">>>") > 0 and command[:7] != "INSERT " and command[:7] != "insert ":
 		real_cmd = command.split(">>>")[0].strip()
 		dump_name = command.split(">>>")[1].strip()
 		dump_type = 'CSV';
@@ -145,7 +146,7 @@ def return_printdata(data_str , no_print=False):
 				print(print_row)	
 			return_str = return_str + print_row	
 			#print(row)
-			count+=1
+			#count+=1
 	else:
 		if data['Content'] != "":
 			if no_print == False:
