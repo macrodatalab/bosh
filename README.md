@@ -80,7 +80,8 @@ bosh:admin>exit
 bosh>
 ```
 
-## copy/append/load tables from mysql/postgresql database
+## copy/append/load tables from mysql/~~postgresql~~ database
+Temporal remove postgresql part because of the dependence issue
 ```bash
 bosh>setdb
 >>> database type [postgresql] : mysql
