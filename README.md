@@ -65,6 +65,11 @@ If you ensure the CSV file without any control character, use 'boost' mode to sp
 ```bash
 bosh:admin>csvloader data.csv datatable boost
 ```
+Assign number of csv rows in an insert statement
+```bash
+bosh:admin>csvloader data.csv datatable 50
+bosh:admin>csvloader data.csv datatable boost 50
+```
 
 ## luaupload
 Upload a lua script to the BigObject server
@@ -75,7 +80,8 @@ bosh:admin>exit
 bosh>
 ```
 
-## copy/append/load tables from mysql/postgresql database
+## copy/append/load tables from mysql/~~postgresql~~ database
+Temporal remove postgresql part because of the dependence issue
 ```bash
 bosh>setdb
 >>> database type [postgresql] : mysql
