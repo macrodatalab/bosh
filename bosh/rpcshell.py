@@ -86,7 +86,7 @@ def printdata(data_str):
 			count+=1
 	else:
 		if data['Content'] != "":
-			print(json.dumps(data['Content'], indent=4))
+			print(json.dumps(data['Content'],ensure_ascii=False, indent=4))
 	
 	return count
  
@@ -113,11 +113,13 @@ def return_getData(server,cmdStr, no_print , workspace_name , timeout=9999):
 	ret_str = ""
 	r = requests.post(server,data=cmd2JSON(cmdStr, workspace_name) , stream=True , timeout=timeout)
 	for content in json_stream(r.raw):
+		#print(content)
 		ret_str = ret_str + return_printdata(json.dumps(content) , no_print)
 	return ret_str
 	
 def return_printdata(data_str , no_print=False):
 	data = json.loads(data_str)
+	#print(data)
 	#count = 0
 	return_str = ""
 
@@ -125,14 +127,14 @@ def return_printdata(data_str , no_print=False):
 		if json.dumps(data['Content']) != "null":
 			if data['Content'] != "":
 				if no_print == False:
-					print(json.dumps(data['Content'], indent=4))
+					print(json.dumps(data['Content'],ensure_ascii=False, indent=4))
 				return_str = json.dumps(data['Content'])
 		else:
 			if data['Err']!= "":
 				if no_print == False:
 					print(json.dumps(data['Err'], indent=4))
 				return_str = json.dumps(data['Err'])
-		return return_str	
+		return return_str
 
 	if 'content' in data['Content'].keys():
 		for row in data['Content']['content']:
@@ -152,7 +154,6 @@ def return_printdata(data_str , no_print=False):
 			if no_print == False:
 				print(json.dumps(data['Content'], indent=4))
 			return_str = json.dumps(data['Content'])
-	
 	return return_str
  
 
