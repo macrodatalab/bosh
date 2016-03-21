@@ -183,6 +183,22 @@ class baseCmd(cmd.Cmd):
         self.do_select(line)
     def do_select(self, line):
         rpcshell.shell(self.connargs, "" , "select " + line , True)
+
+    def do_DELETE(self, line):
+        self.do_delete(line)
+    def do_delete(self, line):
+        rpcshell.shell(self.connargs, "" , "delete " + line)
+
+    def do_SUSPEND(self, line):
+        self.do_suspend(line)
+    def do_suspend(self, line):
+        rpcshell.shell(self.connargs, "" , "suspend " + line)
+
+    def do_RESUME(self, line):
+        self.do_resume(line)
+    def do_resume(self, line):
+        rpcshell.resume(self.connargs, "" , "resume " + line)
+
     def do_INSERT(self, line):
         self.do_insert(line)
     def do_insert(self, line):
@@ -362,6 +378,7 @@ class baseCmd(cmd.Cmd):
         except:
         	traceback.print_exc()
 	
+
     ##### db test ######################################
     def do_SHOWDB(self, line):
 	self.do_showdb(line)
@@ -379,9 +396,15 @@ class baseCmd(cmd.Cmd):
 	dbop.copy(line , self.connargs["host"], self.connargs["port"])
 
     def do_LOAD(self, line):
-	self.do_copy(line)
+	self.do_load(line)
     def do_load(self, line):
-	dbop.load(line , self.connargs["host"], self.connargs["port"])
+	print line[:4]
+	if line[:4] == "data" or line[:4] == "DATA":
+		print "load data : "
+		rpcshell.shell(self.connargs, "" , "load " + line)
+	else:
+		print "load db : "
+		dbop.load(line , self.connargs["host"], self.connargs["port"])
 
     def do_APPEND(self, line):
 	self.do_append(line)
