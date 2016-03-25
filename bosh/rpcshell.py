@@ -113,8 +113,9 @@ def return_getData(server,cmdStr, no_print , workspace_name , timeout=9999):
 	ret_str = ""
 	r = requests.post(server,data=cmd2JSON(cmdStr, workspace_name) , stream=True , timeout=timeout)
 	for content in json_stream(r.raw):
-		#print(content)
 		ret_str = ret_str + return_printdata(json.dumps(content) , no_print)
+	#print("ret_str")
+	#print(ret_str )
 	return ret_str
 	
 def return_printdata(data_str , no_print=False):
@@ -138,15 +139,21 @@ def return_printdata(data_str , no_print=False):
 
 	if 'content' in data['Content'].keys():
 		for row in data['Content']['content']:
-			#print(row)
+			#print("row :" ,row)
 			print_row=""
 			for record in row:
-				if print_row != "":
-					print_row += ","
+				#if print_row != "":
+				#	print_row += ","
                     		print_row += str(record).decode('utf-8')
+				#print(print_row)
 			if no_print == False:
 				print(print_row)	
+			
+			if return_str != "":
+				return_str += ","
+			#print(return_str)
 			return_str = return_str + print_row	
+			#print("return_str : " ,return_str , " , print_row : " , print_row)
 			#print(row)
 			#count+=1
 	else:
@@ -154,6 +161,7 @@ def return_printdata(data_str , no_print=False):
 			if no_print == False:
 				print(json.dumps(data['Content'], indent=4))
 			return_str = json.dumps(data['Content'])
+	#print(return_str)
 	return return_str
  
 
@@ -162,6 +170,8 @@ def shell_return(connargs, shell_name, command, no_print=False):
 	workspace_name = connargs["workspace"]
 	now = time.time()
 	temp = return_getData(bo_url, command, no_print , workspace_name , connargs["timeout"]) 
+	#print("temp")
+	#print(temp)
 	end = time.time()
 	if no_print == False:
 		print '-- execution time: %ss' %  str(round((end - now),2))

@@ -101,6 +101,20 @@ class adminCmd(cmd.Cmd):
 
 class baseCmd(cmd.Cmd):
     assocword = [ 'create' , 'find', 'select' , 'build' , 'use' , 'apply' , 'get' ,'insert' , 'update' , 'alter', 'association', 'from' , 'by' , 'where' , 'query' , 'tables' , 'from', 'by', 'group by' , 'where' , 'tree' , 'table' , 'workspace' ]
+    def completedefault(self, text, line, begidx, endidx):
+        if not text:
+	    #print(text , line)
+            completions = self.assocword[:]
+        else:
+            #print(text , line)
+            completions = [ f
+            for f in self.assocword
+            if f.startswith(text)
+            ]
+	#print(completions)
+        return completions
+
+
     def __init__(self):
         cmd.Cmd.__init__(self)
         try:
@@ -121,16 +135,6 @@ class baseCmd(cmd.Cmd):
             except ImportError:
                 pass
 
-    def completedefault(self, text, line, begidx, endidx):
-        if not text:
-            completions = self.assocword[:]
-        else:
-            completions = [ f
-            for f in self.assocword
-            if f.startswith(text)
-            ]
-        return completions
-
     ############# BigObject ##############
     def do_CREATE(self, line):
         self.do_create(line)
@@ -143,13 +147,18 @@ class baseCmd(cmd.Cmd):
     def do_SHOW(self,line):
         self.do_show(line)
     def do_show(self, line):
+	#print self.assocword
 	#rpcshell.shell(self.connargs, "","show " + line)
 	if line.strip() == 'tables' or line.strip() == 'tree':
 		return_var = rpcshell.shell_return(self.connargs, "","show " + line)
-		list1 = re.split(', ',return_var[1:-1].replace('"', ""))
+		#print(return_var)
+		#list1 = re.split(', ',return_var[1:-1].replace('"', ""))
+		list1 = re.split(',',return_var.replace('"', ""))
 		for l_e in list1:
+			#print("l_e : " )
+			#print(l_e )
 			if not l_e in self.assocword:
-				self.assocword.append(l_e)
+				self.assocword.append(str(l_e))
 		#print self.assocword
 		
 	else:
@@ -252,17 +261,30 @@ class baseCmd(cmd.Cmd):
 	tmp_timeout = self.connargs["timeout"]
 	self.connargs["timeout"]=1
 	try:
+		#print self.assocword
 		return_var = rpcshell.shell_return(self.connargs, "","show tables" , True)
-		list_table = re.split(', ',return_var[1:-1].replace('"', ""))
-		for tab1 in list_table:
-			if not tab1 in self.assocword:
-				self.assocword.append(tab1)
-
+		list1 = re.split(',',return_var.replace('"', ""))
+		for l_e in list1:
+			if not l_e in self.assocword and l_e != '':
+				self.assocword.append(str(l_e))
 		return_var = rpcshell.shell_return(self.connargs, "","show tree" , True)
-		list_tree = re.split(', ',return_var[1:-1].replace('"', ""))
-		for tree1 in list_tree:
-			if not tree1 in self.assocword:
-				self.assocword.append(tree1)
+		list1 = re.split(',',return_var.replace('"', ""))
+		for l_e in list1:
+			if not l_e in self.assocword and l_e != '':
+				self.assocword.append(str(l_e))
+		#print self.assocword
+
+		#return_var = rpcshell.shell_return(self.connargs, "","show tables" , True)
+		#list_table = re.split(', ',return_var[1:-1].replace('"', ""))
+		#for tab1 in list_table:
+		#	if not tab1 in self.assocword:
+		#		self.assocword.append(tab1)
+
+		#return_var = rpcshell.shell_return(self.connargs, "","show tree" , True)
+		#list_tree = re.split(', ',return_var[1:-1].replace('"', ""))
+		#for tree1 in list_tree:
+		#	if not tree1 in self.assocword:
+		#		self.assocword.append(tree1)
 	except:
 		print("\n\n==========================================================" )
 		print("= Connection Error, please check host and port setting.  =" )
