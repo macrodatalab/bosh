@@ -229,16 +229,17 @@ class baseCmd(cmd.Cmd):
     def do_use(self,line):
         cmdSplits=line.split()
         if cmdSplits[0] != "workspace":
-            print "usage: use workspace <workspace_name>"
-            return
-        wsStr=cmdSplits[1] if len(cmdSplits) > 1 else ""
-        if wsStr=="default" or wsStr=="":
-            self.connargs["workspace"]=""
-       	    rpcshell.shell(self.connargs, "" , "use workspace default")
-        else:
-            self.connargs["workspace"]=wsStr
-            sqlStr="create workspace "+wsStr
-	    rpcshell.shell(self.connargs, "" , "use " + line)
+		wsStr=cmdSplits[0]
+		self.connargs["workspace"]=cmdSplits[0]
+	else:
+	        wsStr=cmdSplits[1] if len(cmdSplits) > 1 else ""
+	        if wsStr=="default" or wsStr=="":
+	            self.connargs["workspace"]=""
+	       	    #rpcshell.shell(self.connargs, "" , "use workspace default")
+	        else:
+	            self.connargs["workspace"]=wsStr
+	            #sqlStr="create workspace "+wsStr
+		    #rpcshell.shell(self.connargs, "" , "use " + line)
         print "switch to workspace:" +str(wsStr)
 
     def do_DROP(self,line):
