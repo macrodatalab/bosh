@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='bosh',
-    version='0.2.14',
+    version='0.2.15',
     packages=find_packages(),
 
     install_requires=[
@@ -29,7 +29,7 @@ setup(
         'analytics',
         'command line tool',
     ],
-    url='https://github.com/macrodatalab/bosh.git',
+    url='https://github.com/bigobject-inc/bosh.git',
 
     zip_safe=False
 )
