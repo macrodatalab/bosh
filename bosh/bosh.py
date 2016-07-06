@@ -100,7 +100,7 @@ class adminCmd(cmd.Cmd):
         print "\tset timeout value"
 
 class baseCmd(cmd.Cmd):
-    assocword = [ 'create' , 'find', 'select' , 'build' , 'use' , 'apply' , 'get' ,'insert' , 'update' , 'alter', 'association', 'from' , 'by' , 'where' , 'query' , 'tables' , 'from', 'by', 'group by' , 'where' , 'tree' , 'table' , 'workspace' ]
+    assocword = [ 'create' , 'find', 'select' , 'build' , 'use' , 'apply' , 'get' ,'insert' , 'update' , 'alter', 'association', 'from' , 'by' , 'where' , 'query' , 'tables' , 'from', 'by', 'group by' , 'where' , 'tree' , 'table' , 'workspace' , "send" , "receive" ]
     def completedefault(self, text, line, begidx, endidx):
         if not text:
 	    #print(text , line)
@@ -192,6 +192,18 @@ class baseCmd(cmd.Cmd):
         self.do_select(line)
     def do_select(self, line):
         rpcshell.shell(self.connargs, "" , "select " + line , True)
+
+    def do_SEND(self, line):
+        self.do_send(line)
+    def do_send(self, line):
+        rpcshell.shell(self.connargs, "" , "send " + line)
+
+    def do_RECEIVE(self, line):
+        self.do_receive(line)
+    def do_receive(self, line):
+        rpcshell.shell(self.connargs, "" , "receive " + line)
+
+
 
     def do_DELETE(self, line):
         self.do_delete(line)
