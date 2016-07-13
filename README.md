@@ -187,7 +187,7 @@ bosh>select * from tmp2
 total row : 2
 ```
 
-NOTE: the basic purpose is to link BigObject data and python progeam to perform high-level application easily (ex. k mean, machine learning and so on)
+NOTE: the basic purpose is to link BigObject data and python program to perform high-level application (ex. k mean, machine learning and so on)
 
 Please refer [bosh-pyfunc](https://github.com/bigobject-inc/bosh-pyfunc) for detail.
 
