@@ -130,3 +130,60 @@ The Function only work on statement with a return table such as **FIND**, **SELE
 ## Autocomplete
 
 bosh automatacally load table and tree names into the autocomplete keywords when bosh init, perform "show tables" and "show tree".
+
+## send / receive command
+
+### send
+send the result of a query to a shell command
+
+    SEND "bigobject statement" TO "shell command"
+    
+ex. send query to the cut command to get the fifth field.
+
+```
+bosh>send "select * from sales limit 2" to "cut -d',' -f5"
+2013-01-01 00:04:04
+2013-01-01 00:11:26
+```
+
+### receive
+receive a table from shell command. 
+Note: the table need to be created before receiving data
+The default delimiter is ' ' so return data with space would not be inserted correctly.
+
+    RECEIVE table_name FROM "shell command"
+
+ex. receive data from a json text file "json.txt"
+{
+   "data": [
+      {"id": "X999_Y999"},
+      {"id": "X998_Y998"} 
+   ]
+}
+
+```
+bosh>CREATE TABLE tmp (col1 STRING)
+bosh>RECEIVE tmp FROM "cat json.txt | jq .data[].id --raw-output"
+X999_Y999
+X998_Y998
+```
+
+### send then receive
+
+    SEND "bigobject statement" TO "shell command" RETURN TO table_name
+
+```
+bosh>create table tmp2(time STRING)
+bosh>send "select * from sales limit 2" to "cut -d',' -f3" return to tmp2
+2557
+2631
+bosh>select * from tmp2
+2557
+2631
+=============
+total row : 2
+```
+
+NOTE: the basic purpose is to link BigObject data and python progeam to perform high-level application easily (ex. k mean, machine learning and so on)
+Please refer for detail.
+
