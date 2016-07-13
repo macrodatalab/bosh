@@ -189,5 +189,5 @@ total row : 2
 
 NOTE: the basic purpose is to link BigObject data and python progeam to perform high-level application easily (ex. k mean, machine learning and so on)
 
-Please refer for detail.
+Please refer [bosh-pyfunc](https://github.com/bigobject-inc/bosh-pyfunc) for detail.
 
