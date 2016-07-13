@@ -9,6 +9,7 @@ import tools
 #import getpass
 import traceback
 import dbop
+import send_receive
 
 class adminCmd(cmd.Cmd):
     adminword = [ 'luaupload' , 'LUAUPLOAD', 'CSVLOADER' , 'csvloader']
@@ -196,12 +197,14 @@ class baseCmd(cmd.Cmd):
     def do_SEND(self, line):
         self.do_send(line)
     def do_send(self, line):
-        rpcshell.shell(self.connargs, "" , "send " + line)
+        #rpcshell.shell(self.connargs, "" , "send " + line)
+	send_receive.send(self.connargs, "" , line)
 
     def do_RECEIVE(self, line):
         self.do_receive(line)
     def do_receive(self, line):
-        rpcshell.shell(self.connargs, "" , "receive " + line)
+        #rpcshell.shell(self.connargs, "" , "receive " + line)
+	send_receive.receive(self.connargs, "" , line)
 
 
 

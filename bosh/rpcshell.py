@@ -113,6 +113,8 @@ def return_getData(server,cmdStr, no_print , workspace_name , timeout=9999):
 	ret_str = ""
 	r = requests.post(server,data=cmd2JSON(cmdStr, workspace_name) , stream=True , timeout=timeout)
 	for content in json_stream(r.raw):
+		if ret_str != "":
+			ret_str += ","
 		ret_str = ret_str + return_printdata(json.dumps(content) , no_print)
 	#print("ret_str")
 	#print(ret_str )
