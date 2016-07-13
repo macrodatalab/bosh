@@ -148,19 +148,22 @@ bosh>send "select * from sales limit 2" to "cut -d',' -f5"
 
 ### receive
 receive a table from shell command. 
+
 Note: the table need to be created before receiving data
+
 The default delimiter is ' ' so return data with space would not be inserted correctly.
 
     RECEIVE table_name FROM "shell command"
 
 ex. receive data from a json text file "json.txt"
+```
 {
    "data": [
       {"id": "X999_Y999"},
       {"id": "X998_Y998"} 
    ]
 }
-
+```
 ```
 bosh>CREATE TABLE tmp (col1 STRING)
 bosh>RECEIVE tmp FROM "cat json.txt | jq .data[].id --raw-output"
@@ -185,5 +188,6 @@ total row : 2
 ```
 
 NOTE: the basic purpose is to link BigObject data and python progeam to perform high-level application easily (ex. k mean, machine learning and so on)
+
 Please refer for detail.
 
