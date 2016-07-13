@@ -65,6 +65,40 @@ def return_Data(server,cmdStr, no_print , workspace_name , timeout=9999):
 		ret_str = ret_str + return_data(json.dumps(content) , no_print)
 	return ret_str
 
+def send_return(connargs, shell_name, command):
+	bo_url = "http://" + connargs["host"] + ":" + str(connargs["port"]) + "/cmd"
+	workspace_name = connargs["workspace"]
+	cmd1 = command.split("\"")[1]
+	cmd2 = command.split("\"")[3]
+	ret_table = (command.split("\"")[4]).split(" ")[3]
+	#print cmd1 
+	#print cmd2
+	#print ret_table
+	sneder = Popen(cmd2, shell=True, stdin=PIPE, stdout=PIPE)	
+
+	res = return_Data(bo_url , cmd1 , True , workspace_name , connargs["timeout"])
+	#print res
+	out, err = sneder.communicate(input=res)
+	sneder.wait()
+
+	insert_stmt = ""
+	for line in out.split('\n'):
+		#print "::::" , line.rstrip()
+		if line != "":
+			print line
+		else:
+			break
+		if insert_stmt != "":
+			insert_stmt = insert_stmt + ","
+		if len(line.split()) == 0:
+			insert_stmt = insert_stmt + "(" +  line + ")"
+		else:
+			insert_stmt = insert_stmt + "(" + ",".join([str(col) for col in line.split()]) + ")"
+		#print ",".join([str(col) for col in line.split()])
+		#print ",".join([str(wtf) for wtf in p])
+
+	insert_stmt = "INSERT INTO " + ret_table + " VALUES" + insert_stmt
+	print rpcshell.shell(connargs, "" , insert_stmt)
 
 def send(connargs, shell_name, command):
 	bo_url = "http://" + connargs["host"] + ":" + str(connargs["port"]) + "/cmd"
@@ -91,10 +125,14 @@ def receive(connargs, shell_name, command):
 	insert_stmt = ""
 	for line in iter(proc.stdout.readline,''):
 		#print "::::" , line.rstrip()
+		print line.strip()
 		if insert_stmt != "":
 			insert_stmt = insert_stmt + ","
 
-		insert_stmt = insert_stmt + "(" + ",".join([str(col) for col in line.split()]) + ")"
+		if len(line.split()) == 0:
+			insert_stmt = insert_stmt + "(" +  line + ")"
+		else:
+			insert_stmt = insert_stmt + "(" + ",".join([str(col) for col in line.split()]) + ")"
 		#print ",".join([str(wtf) for wtf in p])
 
 	insert_stmt = "INSERT INTO " + cmd1 + " VALUES" + insert_stmt
@@ -111,4 +149,5 @@ if __name__ == "__main__":
 	#connargs["opts"]=""
 	#send(connargs , "" , cmd )
 	#receive(connargs , "" , cmd)
+	#send_return(connargs , "" , cmd )
 	print "all done"

@@ -198,7 +198,10 @@ class baseCmd(cmd.Cmd):
         self.do_send(line)
     def do_send(self, line):
         #rpcshell.shell(self.connargs, "" , "send " + line)
-	send_receive.send(self.connargs, "" , line)
+	if len(line.lower().split("return to")) > 1:
+		send_receive.send_return(self.connargs, "" , line)
+	else:
+		send_receive.send(self.connargs, "" , line)
 
     def do_RECEIVE(self, line):
         self.do_receive(line)
