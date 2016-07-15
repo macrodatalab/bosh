@@ -84,9 +84,11 @@ def send_return(connargs, shell_name, command):
 	insert_stmt = ""
 	for line in out.split('\n'):
 		#print "::::" , line.rstrip()
-		if line != "":
-			print line
-		else:
+		#if line != "":
+		#	print line
+		#else:
+		#	break
+		if line == "":
 			break
 		if insert_stmt != "":
 			insert_stmt = insert_stmt + ","
@@ -126,7 +128,7 @@ def receive(connargs, shell_name, command):
 	insert_stmt = ""
 	for line in iter(proc.stdout.readline,''):
 		#print "::::" , line.rstrip()
-		print line.strip()
+		#print line.strip()
 		if insert_stmt != "":
 			insert_stmt = insert_stmt + ","
 
