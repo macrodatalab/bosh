@@ -90,10 +90,11 @@ def send_return(connargs, shell_name, command):
 			break
 		if insert_stmt != "":
 			insert_stmt = insert_stmt + ","
+
 		if len(line.split()) == 0:
-			insert_stmt = insert_stmt + "(" +  line + ")"
+			insert_stmt = insert_stmt + "(\"" +  line + "\")"
 		else:
-			insert_stmt = insert_stmt + "(" + ",".join([str(col) for col in line.split()]) + ")"
+			insert_stmt = insert_stmt + "(\"" + "\",\"".join([str(col) for col in line.split()]) + "\")"
 		#print ",".join([str(col) for col in line.split()])
 		#print ",".join([str(wtf) for wtf in p])
 
@@ -130,9 +131,9 @@ def receive(connargs, shell_name, command):
 			insert_stmt = insert_stmt + ","
 
 		if len(line.split()) == 0:
-			insert_stmt = insert_stmt + "(" +  line + ")"
+			insert_stmt = insert_stmt + "(\"" +  line + "\")"
 		else:
-			insert_stmt = insert_stmt + "(" + ",".join([str(col) for col in line.split()]) + ")"
+			insert_stmt = insert_stmt + "(\"" + "\",\"".join([str(col) for col in line.split()]) + "\")"
 		#print ",".join([str(wtf) for wtf in p])
 
 	insert_stmt = "INSERT INTO " + cmd1 + " VALUES" + insert_stmt
