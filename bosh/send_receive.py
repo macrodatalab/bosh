@@ -96,7 +96,7 @@ def send_return(connargs, shell_name, command):
 		if len(line.split()) == 0:
 			insert_stmt = insert_stmt + "(\"" +  line + "\")"
 		else:
-			insert_stmt = insert_stmt + "(\"" + "\",\"".join([str(col) for col in line.split()]) + "\")"
+			insert_stmt = insert_stmt + "(\"" + "\",\"".join([str(col) for col in line.split(',')]) + "\")"
 		#print ",".join([str(col) for col in line.split()])
 		#print ",".join([str(wtf) for wtf in p])
 
