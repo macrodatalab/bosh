@@ -197,15 +197,25 @@ class baseCmd(cmd.Cmd):
     def do_SEND(self, line):
         self.do_send(line)
     def do_send(self, line):
+        rpcshell.shell(self.connargs, "" , "send " + line)
+
+    def do_RECEIVE(self, line):
+        self.do_receive(line)
+    def do_receive(self, line):
+        rpcshell.shell(self.connargs, "" , "receive " + line)
+
+    def do_PYSEND(self, line):
+        self.do_send(line)
+    def do_pysend(self, line):
         #rpcshell.shell(self.connargs, "" , "send " + line)
 	if len(line.lower().split("return to")) > 1:
 		send_receive.send_return(self.connargs, "" , line)
 	else:
 		send_receive.send(self.connargs, "" , line)
 
-    def do_RECEIVE(self, line):
+    def do_PYRECEIVE(self, line):
         self.do_receive(line)
-    def do_receive(self, line):
+    def do_pyreceive(self, line):
         #rpcshell.shell(self.connargs, "" , "receive " + line)
 	send_receive.receive(self.connargs, "" , line)
 
