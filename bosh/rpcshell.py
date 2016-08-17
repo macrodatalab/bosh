@@ -52,7 +52,10 @@ def resDataSave(bo_url , cmdstr , passQ = False , dumptype='CSV', dump_filename=
 	import signal
 	from distutils.sysconfig import get_python_lib
 	boshcwd =os.getcwd()
-	lib_path = get_python_lib() 
+	#lib_path = get_python_lib() 
+	import site
+	lib_path = site.getsitepackages()[0]
+#	print("lib_path " +lib_path)
 
 	rest = subprocess.Popen(["python", lib_path + "/dumpRes/borestful.py" , bo_url , cmdstr ], stdout=subprocess.PIPE)
 	tocsv = subprocess.Popen(["python", lib_path + "/dumpRes/bojson2file.py", dumptype, boshcwd + "/" + dump_filename] , stdin=rest.stdout)
