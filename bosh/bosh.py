@@ -256,6 +256,10 @@ class baseCmd(cmd.Cmd):
         self.do_use(line)
     def do_use(self,line):
         cmdSplits=line.split()
+	if len(cmdSplits) == 0:
+		print "use <workspace>"
+		return
+
         if cmdSplits[0] != "workspace":
 		wsStr=cmdSplits[0]
 		self.connargs["workspace"]=cmdSplits[0]

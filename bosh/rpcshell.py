@@ -19,7 +19,7 @@ def getData(server,cmdStr,show_total_count , workspace_name , timeout=9999):
 	for content in json_stream(r.raw):
 		total_row += printdata(json.dumps(content))
 		if(check_save == True and total_row > 1000):
-			check_save = resDataSave(server, cmdStr,workspace_name)
+			check_save = resDataSave(server, cmdStr, workspace_name)
 			if check_save == True:
 				show_total_count = False
 				break				
@@ -56,8 +56,10 @@ def resDataSave(bo_url , cmdstr ,workspace_name, passQ = False , dumptype='CSV',
 	import site
 	lib_path = site.getsitepackages()[0]
 #	print("lib_path " +lib_path)
-
-	rest = subprocess.Popen(["python", lib_path + "/dumpRes/borestful.py" , bo_url , cmdstr , workspace_name], stdout=subprocess.PIPE)
+	
+	if str(workspace_name) == "":
+		workspace_name = '\"\"'
+	rest = subprocess.Popen(["python", lib_path + "/dumpRes/borestful.py" , bo_url , cmdstr , str(workspace_name)], stdout=subprocess.PIPE)
 	tocsv = subprocess.Popen(["python", lib_path + "/dumpRes/bojson2file.py", dumptype, boshcwd + "/" + dump_filename] , stdin=rest.stdout)
 	print("dumping the data to " + dump_filename + " , type: " + dumptype + " ...")
 	rest.wait()
@@ -104,7 +106,7 @@ def shell(connargs, shell_name, command, show_total_count=False):
 		#print(real_cmd , " ||| " , dump_name)
 		if dump_name.find(".xlsx") > 0 or dump_name.find(".XLSX") > 0:
 			dump_type = 'XLSX'
-		resDataSave(bo_url , real_cmd , True, dump_type , dump_name)
+		resDataSave(bo_url , real_cmd, workspace_name , True, dump_type , dump_name)
 	else:
 		getData(bo_url, command, show_total_count , workspace_name , connargs["timeout"]) 
 	end = time.time()
