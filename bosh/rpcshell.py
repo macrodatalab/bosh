@@ -19,7 +19,7 @@ def getData(server,cmdStr,show_total_count , workspace_name , timeout=9999):
 	for content in json_stream(r.raw):
 		total_row += printdata(json.dumps(content))
 		if(check_save == True and total_row > 1000):
-			check_save = resDataSave(server, cmdStr)
+			check_save = resDataSave(server, cmdStr,workspace_name)
 			if check_save == True:
 				show_total_count = False
 				break				
@@ -32,7 +32,7 @@ def json_stream(fp):
 		#print(line)
 		yield json.loads(line)
 
-def resDataSave(bo_url , cmdstr , passQ = False , dumptype='CSV', dump_filename='dump.csv'):
+def resDataSave(bo_url , cmdstr ,workspace_name, passQ = False , dumptype='CSV', dump_filename='dump.csv'):
 	if passQ == False:
 		confirmStr= "=============\nSize of data exceeded display limit, dump to csv format? (yes/no)"
 		import fileinput
@@ -57,7 +57,7 @@ def resDataSave(bo_url , cmdstr , passQ = False , dumptype='CSV', dump_filename=
 	lib_path = site.getsitepackages()[0]
 #	print("lib_path " +lib_path)
 
-	rest = subprocess.Popen(["python", lib_path + "/dumpRes/borestful.py" , bo_url , cmdstr ], stdout=subprocess.PIPE)
+	rest = subprocess.Popen(["python", lib_path + "/dumpRes/borestful.py" , bo_url , cmdstr , workspace_name], stdout=subprocess.PIPE)
 	tocsv = subprocess.Popen(["python", lib_path + "/dumpRes/bojson2file.py", dumptype, boshcwd + "/" + dump_filename] , stdin=rest.stdout)
 	print("dumping the data to " + dump_filename + " , type: " + dumptype + " ...")
 	rest.wait()
